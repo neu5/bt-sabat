@@ -36,22 +36,3 @@ jobs:
 
       - name: Verify build output
         run: ls -R dist
-
-      - name: Deploy to main branch
-        run: |
-          # Configure git
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Switch to main branch (create if it doesn't exist yet)
-          git fetch origin main || true
-          git checkout main || git checkout --orphan main
-
-          # Copy new build from dist
-          rm -rf ./*  # Clean existing files
-          cp -r ../dist/* .
-
-          # Commit and push changes
-          git add --all
-          git commit -m "Deploy from dev branch ($(date +'%Y-%m-%d %H:%M:%S'))" || echo "No changes to commit"
-          git push origin main
